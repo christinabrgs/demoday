@@ -1,39 +1,48 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
-const PORT = 8000
+const PORT = 3002
+
+app.use(express.static('public')) // serves static files in public folder i.e js
+
 
 app.use(cors())
 
-const rappers = {
-    '21 savage': {
-        'age': 29,
-        'birthName': 'Shéyaa Bin Abraham-Joseph',
-        'birthLocation': 'London, England'
+const food = {
+    'tacos': {
+        'recipe': 'https://tasty.co/recipe/chicken-fajita-tacos',
+        'icon': '🌮',
+        'image': 'taco.png'
     },
-    'chance the rapper':{
-        'age': 29,
-        'birthName': 'Chancelor Bennett',
-        'birthLocation': 'Chicago, Illinois' 
+    'tamale':{
+        'recipe': 'https://tasty.co/recipe/mexican-red-pork-tamales-as-made-by-edna-peredia',
+        'icon': '🫔',
+        'image': 'tamales.png' 
     },
-    'unknown':{
-        'age': 0,
-        'birthName': 'unknown',
-        'birthLocation': 'unknown'
+    'burrito':{
+        'recipe': 'https://tasty.co/recipe/chicken-rice-bean-burritos',
+        'icon': '🌯',
+        'image': 'burrito.png'
     }
 }
 app.get('/', (request, response)=>{
     response.sendFile(__dirname + '/index.html')
 })
 
-app.get('/api/:name',(request,response)=>{
-    const rapperName = request.params.name.toLowerCase()
+// can also be used to serve js file rather than express.static but express is the better option
+// app.get('/js', (request, response)=>{
+//     response.sendFile(__dirname + '/main.js')
+// })
 
-    if( rappers[rapperName] ){
-        response.json(rappers[rapperName])
-    }else{
-        response.json(rappers['unknown'])
+app.get('/api/:name',(request,response)=>{
+    const foodName = request.params.name.toLowerCase()
+
+    if( food[foodName] ){
+        response.json(food[foodName])
     }
+    // else{
+    //     response.json(food['unknown'])
+    // }
     
 })
 
